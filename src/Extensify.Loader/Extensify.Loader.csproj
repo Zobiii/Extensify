@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Extensity.Abstractions\Extensity.Abstractions.csproj" />
-      <ProjectReference Include="..\Extensity.Utils\Extensity.Utils.csproj" />
+      <ProjectReference Include="..\Extensify.Abstractions\Extensify.Abstractions.csproj" />
+      <ProjectReference Include="..\Extensify.Utils\Extensify.Utils.csproj" />
     </ItemGroup>
 
 </Project>
