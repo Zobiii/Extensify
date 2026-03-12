@@ -1,3 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿var loadedPluginCount = 0;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Extensify host starting...");
+Console.WriteLine($"{loadedPluginCount} plugins loaded");
