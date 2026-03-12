@@ -1,1 +1,8 @@
-<Solution />
+<Solution>
+  <Project Path="Extensify.App/Extensify.App.csproj" />
+  <Project Path="Extensity.Abstractions/Extensity.Abstractions.csproj" />
+  <Project Path="Extensity.Loader/Extensity.Loader.csproj" />
+  <Project Path="Extensity.Plugins.Calculator/Extensity.Plugins.Calculator.csproj" />
+  <Project Path="Extensity.Plugins.WeatherMock/Extensity.Plugins.WeatherMock.csproj" />
+  <Project Path="Extensity.Utils/Extensity.Utils.csproj" />
+</Solution>
