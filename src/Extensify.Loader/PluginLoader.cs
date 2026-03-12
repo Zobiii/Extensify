@@ -44,7 +44,8 @@ public sealed class PluginLoader
         Assembly assembly;
         try
         {
-            assembly = Assembly.LoadFrom(assemblyPath);
+            var loadContext = new PluginLoadContext(assemblyPath);
+            assembly = loadContext.LoadFromAssemblyPath(Path.GetFullPath(assemblyPath));
         }
         catch (Exception ex)
         {
