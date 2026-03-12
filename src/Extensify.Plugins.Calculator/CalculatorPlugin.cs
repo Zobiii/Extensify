@@ -3,7 +3,7 @@ using Extensify.Abstractions;
 
 namespace Extensify.Plugins.Calculator;
 
-public sealed class CalculatorPlugin
+public sealed class CalculatorPlugin : IPlugin
 {
     public string Name => "calculator";
 
