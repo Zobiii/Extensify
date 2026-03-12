@@ -35,7 +35,8 @@ public sealed class PluginLoader
             TryLoadAssembly(assemblyPath, plugins, errors);
         }
 
-        return new PluginLoadResult(plugins, errors);
+        var uniquePlugins = RemoveDuplicateCommands(plugins, errors);
+        return new PluginLoadResult(uniquePlugins, errors);
     }
 
     private static void TryLoadAssembly(string assemblyPath, List<IPlugin> plugins, List<PluginLoadError> errors)
@@ -55,10 +56,18 @@ public sealed class PluginLoader
         {
             try
             {
-                if (Activator.CreateInstance(type) is IPlugin plugin)
+                if (Activator.CreateInstance(type) is not IPlugin plugin)
                 {
-                    plugins.Add(plugin);
+                    errors.Add(new PluginLoadError(type.FullName ?? assemblyPath, "Activated type does not implement IPlugin"));
+                    continue;
                 }
+
+                if (!TryValidatePlugin(plugin, type, errors))
+                {
+                    continue;
+                }
+                
+                plugins.Add(plugin);
             }
             catch (Exception ex)
             {
@@ -68,6 +77,50 @@ public sealed class PluginLoader
         }
     }
 
+    private static bool TryValidatePlugin(IPlugin plugin, Type pluginType, List<PluginLoadError> errors)
+    {
+        var source = pluginType.FullName ?? pluginType.Name;
+
+        if (string.IsNullOrWhiteSpace(plugin.Name))
+        {
+            errors.Add(new PluginLoadError(source, "Plugin name is required."));
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(plugin.Description))
+        {
+            errors.Add(new PluginLoadError(source, "Plugin description is required."));
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(plugin.Command))
+        {
+            errors.Add(new PluginLoadError(source, "Plugin command is required."));
+            return false;
+        }
+
+        return true;
+    }
+
+    private static IReadOnlyList<IPlugin> RemoveDuplicateCommands(List<IPlugin> plugins, List<PluginLoadError> errors)
+    {
+        var uniquePlugins = new List<IPlugin>();
+        var seenCommands = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var plugin in plugins)   
+        {
+            if (!seenCommands.Add(plugin.Command))
+            {
+                errors.Add(new PluginLoadError(plugin.Name, $"Duplicate command '{plugin.Command}' was ignored"));
+                continue;
+            }
+            
+            uniquePlugins.Add(plugin);
+        }
+
+        return uniquePlugins;
+    }
+    
     private static IEnumerable<Type> GetPluginTypes(Assembly assembly, string assemblyPath,
         List<PluginLoadError> errors)
     {

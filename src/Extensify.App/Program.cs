@@ -11,6 +11,15 @@ var pluginsByCommand = loadResult.Plugins
     .ToDictionary(group => group.Key, group => group.First(), StringComparer.OrdinalIgnoreCase);
 
 Console.WriteLine("Extensify host starting...");
+
+if (loadResult.Errors.Count > 0)
+{
+    foreach (var error in loadResult.Errors) 
+    {
+        Console.WriteLine($"- {error.Source}: {error.Message}");
+    }
+}
+
 Console.WriteLine($"{pluginsByCommand.Count} plugins loaded");
 Console.WriteLine("Type: plugins | run <command> [args] | exit");
 
