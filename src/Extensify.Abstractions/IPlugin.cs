@@ -51,6 +51,11 @@ public sealed record PluginExecutionResult
     public static PluginExecutionResult Success(string message) =>
         new() { IsSuccess = true, Message = message };
 
+    /// <summary>
+    /// Creates a failed execution result.
+    /// </summary>
+    /// <param name="message">The failure message.</param>
+    /// <returns>A failed <see cref="PluginExecutionResult"/>.</returns>
     public static PluginExecutionResult Failure(string message) =>
         new() { IsSuccess = false, Message = message };
 }

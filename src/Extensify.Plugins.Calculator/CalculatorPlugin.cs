@@ -3,14 +3,31 @@ using Extensify.Abstractions;
 
 namespace Extensify.Plugins.Calculator;
 
+/// <summary>
+/// Provides basic calculator operations for the Extensify host.
+/// </summary>
 public sealed class CalculatorPlugin : IPlugin
 {
+    /// <summary>
+    /// Gets the display name of the plugin.
+    /// </summary>
     public string Name => "calculator";
 
+    /// <summary>
+    /// Gets the short description of the plugin.
+    /// </summary>
     public string Description => "Basic math operations";
 
+    /// <summary>
+    /// Gets the command key used by the host.
+    /// </summary>
     public string Command => "calculator";
 
+    /// <summary>
+    /// Executes one calculator operation with two numeric operands.
+    /// </summary>
+    /// <param name="args">The operation and operands in the format &lt;op&gt; &lt;x&gt; &lt;y&gt;.</param>
+    /// <returns>The execution result containing either output or an error message.</returns>
     public PluginExecutionResult Execute(string[] args)
     {
         if (args.Length != 3)
@@ -21,7 +38,7 @@ public sealed class CalculatorPlugin : IPlugin
         if (!double.TryParse(args[1], NumberStyles.Float, CultureInfo.InvariantCulture, out var left) ||
             !double.TryParse(args[2], NumberStyles.Float, CultureInfo.InvariantCulture, out var right))
         {
-            return PluginExecutionResult.Failure("Both numbers must be a valid numeric values.");
+            return PluginExecutionResult.Failure("Both numbers must be valid numeric values.");
         }
 
         var operations = args[0].ToLowerInvariant();

@@ -15,6 +15,7 @@ Console.WriteLine("Extensify host starting...");
 
 if (loadResult.Errors.Count > 0)
 {
+    Console.WriteLine("Plugin load warnings:");
     foreach (var error in loadResult.Errors) 
     {
         Console.WriteLine($"- {error.Source}: {error.Message}");
